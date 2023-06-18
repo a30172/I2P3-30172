@@ -52,6 +52,7 @@ class State{
     GameState game_state = UNKNOWN;
     Board board;
     int player = 0;
+    int value = 0 ;
     std::vector<Move> legal_actions;
     
     State(){};
@@ -139,9 +140,9 @@ void State::get_legal_actions(){
           case 1: //pawn
             if(this->player && i<BOARD_H-1){
               //black
-              if(!oppn_board[i+1][j] && !self_board[i+1][j])
+              if(!oppn_board[i+1][j] && !self_board[i+1][j]) //往前走一步
                 all_actions.push_back(Move(Point(i, j), Point(i+1, j)));
-              if(j<BOARD_W-1 && (oppn_piece=oppn_board[i+1][j+1])>0){
+              if(j<BOARD_W-1 && (oppn_piece=oppn_board[i+1][j+1])>0){  //右前吃子
                 all_actions.push_back(Move(Point(i, j), Point(i+1, j+1)));
                 if(oppn_piece==6){
                   this->game_state = WIN;
@@ -149,7 +150,7 @@ void State::get_legal_actions(){
                   return;
                 }
               }
-              if(j>0 && (oppn_piece=oppn_board[i+1][j-1])>0){
+              if(j>0 && (oppn_piece=oppn_board[i+1][j-1])>0){  //左前吃子
                 all_actions.push_back(Move(Point(i, j), Point(i+1, j-1)));
                 if(oppn_piece==6){
                   this->game_state = WIN;
@@ -159,9 +160,9 @@ void State::get_legal_actions(){
               }
             }else if(!this->player && i>0){
               //white
-              if(!oppn_board[i-1][j] && !self_board[i-1][j])
+              if(!oppn_board[i-1][j] && !self_board[i-1][j])  //往前走一步
                 all_actions.push_back(Move(Point(i, j), Point(i-1, j)));
-              if(j<BOARD_W-1 && (oppn_piece=oppn_board[i-1][j+1])>0){
+              if(j<BOARD_W-1 && (oppn_piece=oppn_board[i-1][j+1])>0){  //右前吃子
                 all_actions.push_back(Move(Point(i, j), Point(i-1, j+1)));
                 if(oppn_piece==6){
                   this->game_state = WIN;
@@ -169,7 +170,7 @@ void State::get_legal_actions(){
                   return;
                 }
               }
-              if(j>0 && (oppn_piece=oppn_board[i-1][j-1])>0){
+              if(j>0 && (oppn_piece=oppn_board[i-1][j-1])>0){  //左前吃子
                 all_actions.push_back(Move(Point(i, j), Point(i-1, j-1)));
                 if(oppn_piece==6){
                   this->game_state = WIN;
@@ -462,6 +463,12 @@ int main(int argc, char** argv) {
       log << "Invalid Action\n";
       log << x_axis[action.first.second] << y_axis[action.first.first] << " → " \
           << x_axis[action.second.second] << y_axis[action.second.first] << "\n";
+      log << action.first.second << action.first.first << " → " \
+          << action.second.second << action.second.first << "\n";
+      for( auto it = game.legal_actions.begin() ; it!=game.legal_actions.end() ; it++){
+        log << it->first.second << it->first.first << " → " \
+          << it->second.second << it->second.first << "\n";
+      }
       log << data;
       game.player = !game.player;
       game.game_state = WIN;
@@ -474,6 +481,8 @@ int main(int argc, char** argv) {
       log << "Depth: " << total << std::endl;
       log << x_axis[action.first.second] << y_axis[action.first.first] << " → " \
           << x_axis[action.second.second] << y_axis[action.second.first] << "\n";
+      log << action.first.second << action.first.first << " → " \
+          << action.second.second << action.second.first << "\n";
     }
     game = *temp;
     
@@ -510,7 +519,7 @@ int main(int argc, char** argv) {
   log << data << std::endl;
   if(game.game_state == WIN){
     std::cout << "Player" << game.player+1 << " wins\n";
-    log << "Player" << game.player+1 << " wins\n";
+    log << "Player" << game.player+1 << " wins\n"; 
   }else{
     std::cout << "Draw\n";
     log << "Draw\n";

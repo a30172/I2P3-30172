@@ -42,38 +42,6 @@ Move Minimax::get_move(State *state, int depth ,int selfplyer){
       actions = *it ;
     }
   }
-  /*Move newmove = *(state->legal_actions.begin());
-  State* newone ;
-  auto legel = state->legal_actions;
-
-  if(state->player==selfplyer){
-    state->value=-1e9;
-    for( auto it = legel.begin() ; it!=legel.end() ; ++it){
-      newmove = *it ;
-      newone = state->next_state(newmove);
-      if(depth==1) newone->value = newone->evaluate(selfplyer);
-      else newone->value = newone->next_state(get_move(newone,depth-1,selfplyer))->value;
-
-      if(newone->value>state->value){
-        state->value=newone->value;
-        actions = *it ;
-      }
-    }
-  }
-  else{
-    state->value=1e9;
-    for( auto it = legel.begin() ; it!=legel.end() ; it++){
-      newmove = *it ;
-      newone = state->next_state(newmove);
-      if(depth==1) newone->value = newone->evaluate(selfplyer);
-      else newone->value = newone->next_state(get_move(newone,depth-1,selfplyer))->value;
-
-      if(newone->value<state->value){
-        state->value=newone->value;
-        actions = *it ;
-      }
-    }
-  }*/
   
   return actions;
 }

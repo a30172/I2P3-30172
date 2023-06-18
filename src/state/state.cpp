@@ -11,11 +11,11 @@
  * 
  * @return int 
  */
-int State::evaluate(){
+int State::evaluate(int self_player){
   // [TODO] design your own evaluation function
-  auto self_board = this->board.board[this->player];
-  auto oppn_board = this->board.board[1 - this->player];
-  int now_piece, oppn_piece;
+  
+  auto self_board = this->board.board[self_player];
+  int now_piece;
 
   int value=0;
   int rook=0 , knight=0 , bishop=0 ;
@@ -68,12 +68,11 @@ int State::evaluate(){
 
   for(int i=2; i<=3; i+=1){
     for(int j=2; j<=4; j+=1){
-      if((now_piece=self_board[i][j])){
+      if((self_board[i][j])){
         value+=5;
       }
     }
   }
-
   return value;
 }
 
