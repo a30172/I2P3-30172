@@ -13,7 +13,68 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  return 0;
+  auto self_board = this->board.board[this->player];
+  auto oppn_board = this->board.board[1 - this->player];
+  int now_piece, oppn_piece;
+
+  int value=0;
+  int rook=0 , knight=0 , bishop=0 ;
+  for(int i=0; i<BOARD_H; i+=1){
+    for(int j=0; j<BOARD_W; j+=1){
+      if((now_piece=self_board[i][j])){
+        // std::cout << this->player << "," << now_piece << ' ';
+        switch (now_piece){
+          case 1: // pawn
+            if(j==0 || j==BOARD_W-1){
+              value+=2;
+            }
+            else{
+              value+=4;
+            }
+            if( ( !this->player && i<2 ) || (this->player && i>BOARD_W-3) ){
+              value+=16;
+            }
+          break;
+          case 2: //rook
+            value+=10;
+            rook+=1;
+            if(rook==2){
+              value+=5;
+            }
+          break;
+          case 3: //knight
+            value+=6;
+            knight+=1;
+            if(knight==2){
+              value+=5;
+            }
+          break;
+          case 4: //bishop
+            value+=8;
+            bishop+=1;
+            if(bishop==2){
+              value+=5;
+            }
+          break;
+          case 5: // queen
+            value+=20;
+          break;
+          case 6: //king
+          break;
+        }
+      }
+    }
+  }
+
+  for(int i=2; i<=3; i+=1){
+    for(int j=2; j<=4; j+=1){
+      if((now_piece=self_board[i][j])){
+        value+=5;
+      }
+    }
+  }
+
+  return value;
 }
 
 
