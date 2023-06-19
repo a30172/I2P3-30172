@@ -11,12 +11,14 @@
  * 
  * @return int 
  */
+
 int State::evaluate(){
   // [TODO] design your own evaluation function
   
   auto self_board = this->board.board[this->player];
   auto oppn_board = this->board.board[1 - this->player];
   int now_piece, oppn_piece;
+  //int x,y;
 
   int value=0 , self_value=0 ,oppn_value=0;
   for(int i=0; i<BOARD_H; i+=1){
@@ -27,7 +29,7 @@ int State::evaluate(){
           case 1: // pawn
             if(j==0 || j==BOARD_W-1) self_value+=7;
             else self_value+=10;
-            if( (!this->player && i<2) || (this->player && i>3))
+            if( (!this->player && i<2) || (this->player && i>3) )
               self_value+=100;
           break;
           case 2: //rook
@@ -44,6 +46,8 @@ int State::evaluate(){
           break;
           case 6: //king
             self_value+=90;
+            //x=i;
+            //y=j;
           break;
         }
 
@@ -88,6 +92,97 @@ int State::evaluate(){
       }
     }
   }
+
+  /*for(int i=0; i<BOARD_H; i+=1){
+    for(int j=0; j<BOARD_W; j+=1){
+      if((oppn_piece=oppn_board[i][j])){
+        switch (oppn_piece){
+          case 1: // pawn
+            if( (!this->player && (i==x+1 || i==x-1) && j==y-1) || (!this->player && (i==x+1 || i==x-1) && j==y+1)) {
+              self_value-=1e9;
+            }
+          break;
+          case 2: //rook
+            if( x==i ){
+              int flag=1;
+              for( int k=std::min(x,i)+1 ; k<std::max(x,i)-1 ; k++){
+                if((oppn_board[k][j]||self_board[k][j])) {
+                  flag=0;
+                  break;
+                }
+              }
+              if(flag)self_value-=1e9;
+            }
+            else if( y==j ){
+              int flag=1;
+              for( int k=std::min(y,j)+1 ; k<std::max(y,j)-1 ; k++){
+                if((oppn_board[i][k]||self_board[i][k])) {
+                  flag=0;
+                  break;
+                }
+              }
+              if(flag)self_value-=1e9;
+            }
+          break;
+          case 3: //knight
+            if( (std::abs(x-i) == 2 && std::abs(y-j)==1 ) || (std::abs(x-i) == 1 && std::abs(y-j)==2 )){
+              self_value-=1e9;
+            }
+          break;
+          case 4: //bishop
+            if( std::abs(x-i) == std::abs(y-j)){
+              int flag=1;
+              for(int k=1 ; k<std::abs(x-i)-1 ; k++){
+                int newx = x + (i-x)*k/std::abs(x-i);
+                int newy = x + (j-y)*k/std::abs(x-i);
+                if((oppn_board[newx][newy]||self_board[newx][newy])) {
+                  flag=0;
+                  break;
+                }
+                if(flag)self_value-=1e9;
+              }
+            }
+          break;
+          case 5: // queen
+            if( x==i ){
+              int flag=1;
+              for( int k=std::min(x,i)+1 ; k<std::max(x,i)-1 ; k++){
+                if((oppn_board[k][j]||self_board[k][j])) {
+                  flag=0;
+                  break;
+                }
+              }
+              if(flag)self_value-=1e9;
+            }
+            else if( y==j ){
+              int flag=1;
+              for( int k=std::min(y,j)+1 ; k<std::max(y,j)-1 ; k++){
+                if((oppn_board[i][k]||self_board[i][k])) {
+                  flag=0;
+                  break;
+                }
+              }
+              if(flag)self_value-=1e9;
+            }
+            else if( std::abs(x-i) == std::abs(y-j)){
+              int flag=1;
+              for(int k=1 ; k<std::abs(x-i)-1 ; k++){
+                int newx = x + (i-x)*k/std::abs(x-i);
+                int newy = x + (j-y)*k/std::abs(x-i);
+                if((oppn_board[newx][newy]||self_board[newx][newy])) {
+                  flag=0;
+                  break;
+                }
+                if(flag)self_value-=1e9;
+              }
+            }
+          break;
+          case 6: //king
+          break;
+        }
+      }
+    }
+  }*/
 
   value = self_value - oppn_value ;
   return value;

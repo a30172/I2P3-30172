@@ -500,12 +500,12 @@ int main(int argc, char** argv) {
     // Output current state
     std::cout << step << " step" << std::endl;
     log << step << " step" << std::endl;
-    log << "Player 0 " <<" " <<game.evaluate(0) << "\n" ;
+    /*log << "Player 0 " <<" " <<game.evaluate(0) << "\n" ;
     log << "Player 1 " <<" " <<game.evaluate(1) << "\n" ;
     for( auto it = game.legal_actions.begin() ; it!=game.legal_actions.end() ; it++){
         log << it->first.second << it->first.first << " → " \
           << it->second.second << it->second.first << "\n";
-      }
+      }*/
     data = game.encode_output();
     std::cout << data << std::endl;
     log << data << std::endl;
