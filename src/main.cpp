@@ -81,7 +81,10 @@ int State::evaluate(int player){
         // std::cout << this->player << "," << now_piece << ' ';
         switch (now_piece){
           case 1: // pawn
-            self_value+=10;
+            if(j==0 || j==BOARD_W-1) self_value+=7;
+            else self_value+=10;
+            if( (!player && i<2) || (player && i>3))
+              self_value+=100;
           break;
           case 2: //rook
             self_value+=50;
@@ -101,7 +104,7 @@ int State::evaluate(int player){
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          self_value+=10;
+          self_value+=50;
         }
       }
     }
@@ -113,7 +116,10 @@ int State::evaluate(int player){
         // std::cout << this->player << "," << now_piece << ' ';
         switch (oppn_piece){
           case 1: // pawn
-            oppn_value+=10;
+            if(j==0 || j==BOARD_W-1) oppn_value+=7;
+            else oppn_value+=10;
+            if( (player && i<2) || (!player && i>3))
+              oppn_value+=100;
           break;
           case 2: //rook
             oppn_value+=50;
@@ -133,7 +139,7 @@ int State::evaluate(int player){
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          oppn_value+=10;
+          oppn_value+=50;
         }
       }
     }
@@ -495,6 +501,11 @@ int main(int argc, char** argv) {
     std::cout << step << " step" << std::endl;
     log << step << " step" << std::endl;
     log << "Player 0 " <<" " <<game.evaluate(0) << "\n" ;
+    log << "Player 1 " <<" " <<game.evaluate(1) << "\n" ;
+    for( auto it = game.legal_actions.begin() ; it!=game.legal_actions.end() ; it++){
+        log << it->first.second << it->first.first << " → " \
+          << it->second.second << it->second.first << "\n";
+      }
     data = game.encode_output();
     std::cout << data << std::endl;
     log << data << std::endl;
