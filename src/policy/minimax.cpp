@@ -11,7 +11,7 @@
  * @param depth You may need this for other policy
  * @return Move 
  */
-Move Minimax::get_move(State *state, int depth ,int selfplyer){
+Move Minimax::get_move(State *state, int depth ){
   if(!state->legal_actions.size())
     state->get_legal_actions();
   
@@ -20,22 +20,6 @@ Move Minimax::get_move(State *state, int depth ,int selfplyer){
   state->value=-1e9;
   for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
     newone = state->next_state(*it);
-    
-    if(!newone->legal_actions.size())
-    newone->get_legal_actions();
-  
-    Move nextactions = *(newone->legal_actions.begin());
-    State* nextone ;
-    newone->value=+1e9;
-    for( auto is = newone->legal_actions.begin() ; is!=newone->legal_actions.end() ; ++is){
-      nextone = state->next_state(*is);
-      nextone->value = newone->evaluate();
-      if(nextone->value>newone->value){
-      newone->value=nextone->value;
-      nextactions = *is ;
-      }
-    }
-
 
     if(newone->value>state->value){
       state->value=newone->value;
