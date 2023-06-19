@@ -60,11 +60,88 @@ class State{
     State(Board board): board(board){};
     State(Board board, int player): board(board), player(player){};
     
+    int evaluate(int player);
     State* next_state(Move move);
     void get_legal_actions();
     std::string encode_output();
     std::string encode_state();
 };
+
+int State::evaluate(int player){
+  // [TODO] design your own evaluation function
+  
+  auto self_board = this->board.board[player];
+  auto oppn_board = this->board.board[1 - player];
+  int now_piece, oppn_piece;
+
+  int value=0 , self_value=0 ,oppn_value=0;
+  for(int i=0; i<BOARD_H; i+=1){
+    for(int j=0; j<BOARD_W; j+=1){
+      if((now_piece=self_board[i][j])){
+        // std::cout << this->player << "," << now_piece << ' ';
+        switch (now_piece){
+          case 1: // pawn
+            self_value+=10;
+          break;
+          case 2: //rook
+            self_value+=50;
+          break;
+          case 3: //knight
+            self_value+=30;
+          break;
+          case 4: //bishop
+            self_value+=30;
+          break;
+          case 5: // queen
+            self_value+=900;
+          break;
+          case 6: //king
+            self_value+=90;
+          break;
+        }
+
+        if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
+          self_value+=10;
+        }
+      }
+    }
+  }
+
+  for(int i=0; i<BOARD_H; i+=1){
+    for(int j=0; j<BOARD_W; j+=1){
+      if((oppn_piece=oppn_board[i][j])){
+        // std::cout << this->player << "," << now_piece << ' ';
+        switch (oppn_piece){
+          case 1: // pawn
+            oppn_value+=10;
+          break;
+          case 2: //rook
+            oppn_value+=50;
+          break;
+          case 3: //knight
+            oppn_value+=30;
+          break;
+          case 4: //bishop
+            oppn_value+=30;
+          break;
+          case 5: // queen
+            oppn_value+=900;
+          break;
+          case 6: //king
+            oppn_value+=90;
+          break;
+        }
+
+        if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
+          oppn_value+=10;
+        }
+      }
+    }
+  }
+
+  value = self_value - oppn_value ;
+  return value;
+}
 
 /**
  * @brief return next state after the move
@@ -417,6 +494,7 @@ int main(int argc, char** argv) {
     // Output current state
     std::cout << step << " step" << std::endl;
     log << step << " step" << std::endl;
+    log << "Player 0 " <<" " <<game.evaluate(0) << "\n" ;
     data = game.encode_output();
     std::cout << data << std::endl;
     log << data << std::endl;

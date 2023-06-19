@@ -29,8 +29,8 @@ Move Minimax::get_move(State *state, int depth ,int selfplyer){
     newone->value=+1e9;
     for( auto is = newone->legal_actions.begin() ; is!=newone->legal_actions.end() ; ++is){
       nextone = state->next_state(*is);
-      nextone->value = newone->evaluate(selfplyer);
-      if(nextone->value<newone->value){
+      nextone->value = newone->evaluate();
+      if(nextone->value>newone->value){
       newone->value=nextone->value;
       nextactions = *is ;
       }
