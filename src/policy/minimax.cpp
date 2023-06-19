@@ -18,7 +18,11 @@ Move Minimax::get_move(State *state, int depth ,int selfplayer){
   Move actions = *(state->legal_actions.begin());
   Move tmp;
   State* newone ;
-  state->value=-1e9;
+  if(state->player==selfplayer)
+    state->value=-1e9;
+  else 
+    state->value=1e9;
+    
   for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
     tmp = *it ;
     newone = state->next_state(tmp);
