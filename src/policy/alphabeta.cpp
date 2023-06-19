@@ -10,31 +10,52 @@ int alpbe(State *state, int depth , int alp , int be , int selfplayer){
 
     Move tmp;
     State* newone ;
+    int alpha=alp , beta=be;
 
     if(state->player==selfplayer){
-        int value = -1e9 ;
-        for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
-            tmp = *it;
-            newone = state->next_state(tmp);
 
-            if(!depth) value = newone->evaluate() ;
-            else value = std::max(value,alpbe(newone, depth-1 , alp , be , selfplayer)) ;
-            alp = std::max(value,alp) ;
-            if(alp >= be) break ;
+      int value = -1e9 ;
+      int t;
+      for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
+        tmp = *it;
+        newone = state->next_state(tmp);
+
+        if(!depth) value = newone->evaluate() ;
+        else {
+          t = alpbe(newone, depth-1 , alpha , beta , selfplayer);
+          if(t>value)
+            value = t ;
         }
-        return value ;
+
+        if(alpha<value){
+          alpha = value ;
+        }
+
+        if(alpha >= beta) break ;
+      }
+
+      return value ;
     }
     else{
       int value = 1e9 ;
-        for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
-            tmp = *it;
-            newone = state->next_state(tmp);
+      int t;
+      for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
+        tmp = *it;
+        newone = state->next_state(tmp);
 
-            if(!depth) value = newone->evaluate() ;
-            else value = std::min(value,alpbe(newone, depth-1 , alp , be , selfplayer)) ;
-            be = std::min(value,be) ;
-            if(alp >= be) break ;
+        if(!depth) value = newone->evaluate() ;
+        else {
+          t = alpbe(newone, depth-1 , alpha , beta , selfplayer);
+          if(t<value)
+            value = t ;
         }
+
+        if(beta>value){
+          beta = value ;
+        }
+
+        if(alpha >= beta) break ;
+      }
         return value ;
     }
 }

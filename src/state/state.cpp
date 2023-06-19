@@ -18,7 +18,6 @@ int State::evaluate(){
   auto self_board = this->board.board[this->player];
   auto oppn_board = this->board.board[1 - this->player];
   int now_piece, oppn_piece;
-  //int x,y;
 
   int value=0 , self_value=0 ,oppn_value=0;
   for(int i=0; i<BOARD_H; i+=1){
@@ -27,8 +26,8 @@ int State::evaluate(){
         // std::cout << this->player << "," << now_piece << ' ';
         switch (now_piece){
           case 1: // pawn
-            if(j==0 || j==BOARD_W-1) self_value+=7;
-            else self_value+=10;
+            if(j==0 || j==BOARD_W-1) self_value+=10;
+            else self_value+=15;
             if( (!this->player && i<2) || (this->player && i>3) )
               self_value+=100;
           break;
@@ -45,14 +44,14 @@ int State::evaluate(){
             self_value+=900;
           break;
           case 6: //king
-            self_value+=90;
+            self_value+=100000000;
             //x=i;
             //y=j;
           break;
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          self_value+=50;
+          self_value+=30;
         }
       }
     }
@@ -64,8 +63,8 @@ int State::evaluate(){
         // std::cout << this->player << "," << now_piece << ' ';
         switch (oppn_piece){
           case 1: // pawn
-            if(j==0 || j==BOARD_W-1) oppn_value+=7;
-            else oppn_value+=10;
+            if(j==0 || j==BOARD_W-1) oppn_value+=10;
+            else oppn_value+=15;
             if( (this->player && i<2) || (!this->player && i>3))
               oppn_value+=100;
           break;
@@ -82,12 +81,12 @@ int State::evaluate(){
             oppn_value+=900;
           break;
           case 6: //king
-            oppn_value+=90;
+            oppn_value+=100000000;
           break;
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          oppn_value+=50;
+          oppn_value+=30;
         }
       }
     }
