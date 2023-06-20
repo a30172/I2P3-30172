@@ -20,6 +20,7 @@ int State::evaluate(){
   int now_piece, oppn_piece;
 
   int value=0 , self_value=0 ,oppn_value=0;
+  int pawn=0 , self=0 , oppn=0  , self_knight = 0 , oppn_knight = 0;
   for(int i=0; i<BOARD_H; i+=1){
     for(int j=0; j<BOARD_W; j+=1){
       if((now_piece=self_board[i][j])){
@@ -29,24 +30,27 @@ int State::evaluate(){
             if(j==0 || j==BOARD_W-1) self_value+=10;
             else self_value+=15;
             if( (!this->player && i<2) || (this->player && i>3) )
-              self_value+=100;
+              self_value+=50;
+            pawn++;
           break;
           case 2: //rook
             self_value+=50;
+            self++;
           break;
           case 3: //knight
             self_value+=40;
+            self_knight++;
           break;
           case 4: //bishop
             self_value+=30;
+            self++;
           break;
           case 5: // queen
-            self_value+=900;
+            self_value+=300;
+            self++;
           break;
           case 6: //king
             self_value+=100000000;
-            //x=i;
-            //y=j;
           break;
         }
 
@@ -66,19 +70,24 @@ int State::evaluate(){
             if(j==0 || j==BOARD_W-1) oppn_value+=10;
             else oppn_value+=15;
             if( (this->player && i<2) || (!this->player && i>3))
-              oppn_value+=100;
+              oppn_value+=50;
+            pawn++;
           break;
           case 2: //rook
             oppn_value+=50;
+            oppn++;
           break;
           case 3: //knight
             oppn_value+=40;
+            oppn_knight++;
           break;
           case 4: //bishop
             oppn_value+=30;
+            oppn++;
           break;
           case 5: // queen
-            oppn_value+=900;
+            oppn_value+=300;
+            oppn++;
           break;
           case 6: //king
             oppn_value+=10000000;
@@ -92,6 +101,10 @@ int State::evaluate(){
     }
   }
   value = self_value - oppn_value ;
+
+  if(pawn>=5) value += (self_knight-oppn_knight)*10;
+  else value += (self-oppn)*10;
+
   return value;
 }
 
