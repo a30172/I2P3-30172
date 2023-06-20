@@ -74,11 +74,13 @@ Move Alphabeta::get_move(State *state, int depth , int selfplayer){
 
   Move actions=*(state->legal_actions.begin());
   Move tmp ;
+  State* newone;
   int alp = -1e9;
   for( auto it = state->legal_actions.begin() ; it!=state->legal_actions.end() ; ++it){
     tmp = *it;
+    newone = state->next_state(tmp) ;
 
-    int value = alpbe(state->next_state(tmp), depth-1 , -1e9 , 1e9 , selfplayer);
+    int value = alpbe(newone, depth-1 , -1e9 , 1e9 , selfplayer);
     if(value>=alp){
         alp = value ;
         actions = tmp ;

@@ -35,7 +35,7 @@ int State::evaluate(){
             self_value+=50;
           break;
           case 3: //knight
-            self_value+=30;
+            self_value+=40;
           break;
           case 4: //bishop
             self_value+=30;
@@ -51,7 +51,7 @@ int State::evaluate(){
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          self_value+=30;
+          self_value+=10;
         }
       }
     }
@@ -72,7 +72,7 @@ int State::evaluate(){
             oppn_value+=50;
           break;
           case 3: //knight
-            oppn_value+=30;
+            oppn_value+=40;
           break;
           case 4: //bishop
             oppn_value+=30;
@@ -81,108 +81,16 @@ int State::evaluate(){
             oppn_value+=900;
           break;
           case 6: //king
-            oppn_value+=100000000;
+            oppn_value+=10000000;
           break;
         }
 
         if( (i==2 || i==3) && (j==1 || j==2 || j==3) ){
-          oppn_value+=30;
+          oppn_value+=10;
         }
       }
     }
   }
-
-  /*for(int i=0; i<BOARD_H; i+=1){
-    for(int j=0; j<BOARD_W; j+=1){
-      if((oppn_piece=oppn_board[i][j])){
-        switch (oppn_piece){
-          case 1: // pawn
-            if( (!this->player && (i==x+1 || i==x-1) && j==y-1) || (!this->player && (i==x+1 || i==x-1) && j==y+1)) {
-              self_value-=1e9;
-            }
-          break;
-          case 2: //rook
-            if( x==i ){
-              int flag=1;
-              for( int k=std::min(x,i)+1 ; k<std::max(x,i)-1 ; k++){
-                if((oppn_board[k][j]||self_board[k][j])) {
-                  flag=0;
-                  break;
-                }
-              }
-              if(flag)self_value-=1e9;
-            }
-            else if( y==j ){
-              int flag=1;
-              for( int k=std::min(y,j)+1 ; k<std::max(y,j)-1 ; k++){
-                if((oppn_board[i][k]||self_board[i][k])) {
-                  flag=0;
-                  break;
-                }
-              }
-              if(flag)self_value-=1e9;
-            }
-          break;
-          case 3: //knight
-            if( (std::abs(x-i) == 2 && std::abs(y-j)==1 ) || (std::abs(x-i) == 1 && std::abs(y-j)==2 )){
-              self_value-=1e9;
-            }
-          break;
-          case 4: //bishop
-            if( std::abs(x-i) == std::abs(y-j)){
-              int flag=1;
-              for(int k=1 ; k<std::abs(x-i)-1 ; k++){
-                int newx = x + (i-x)*k/std::abs(x-i);
-                int newy = x + (j-y)*k/std::abs(x-i);
-                if((oppn_board[newx][newy]||self_board[newx][newy])) {
-                  flag=0;
-                  break;
-                }
-                if(flag)self_value-=1e9;
-              }
-            }
-          break;
-          case 5: // queen
-            if( x==i ){
-              int flag=1;
-              for( int k=std::min(x,i)+1 ; k<std::max(x,i)-1 ; k++){
-                if((oppn_board[k][j]||self_board[k][j])) {
-                  flag=0;
-                  break;
-                }
-              }
-              if(flag)self_value-=1e9;
-            }
-            else if( y==j ){
-              int flag=1;
-              for( int k=std::min(y,j)+1 ; k<std::max(y,j)-1 ; k++){
-                if((oppn_board[i][k]||self_board[i][k])) {
-                  flag=0;
-                  break;
-                }
-              }
-              if(flag)self_value-=1e9;
-            }
-            else if( std::abs(x-i) == std::abs(y-j)){
-              int flag=1;
-              for(int k=1 ; k<std::abs(x-i)-1 ; k++){
-                int newx = x + (i-x)*k/std::abs(x-i);
-                int newy = x + (j-y)*k/std::abs(x-i);
-                if((oppn_board[newx][newy]||self_board[newx][newy])) {
-                  flag=0;
-                  break;
-                }
-                if(flag)self_value-=1e9;
-              }
-            }
-          break;
-          case 6: //king
-          break;
-        }
-      }
-    }
-  }*/
-
   value = self_value - oppn_value ;
   return value;
 }
